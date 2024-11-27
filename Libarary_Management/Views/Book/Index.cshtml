@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Libarary_Management.tblBook>
+
+@{
+    ViewBag.Title = "Book List";
+}
+
+<h2>Book List</h2>
+
+<!-- Search Bar -->
+<form method="get" action="@Url.Action("Index", "Book")">
+    <div class="form-inline mb-3">
+        <input type="text" name="searchQuery" class="form-control mr-2" placeholder="Search by Title, Author, or ISBN" value="@Request.QueryString["searchQuery"]" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+<!-- Books Table -->
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Author</th>
+            <th>Publication</th>
+            <th>ISBN</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            int index = 1;
+            foreach (var book in Model)
+            {
+                <tr>
+                    <td>@index</td>
+                    <td>@book.Title</td>
+                    <td>@book.CategoryType</td>
+                    <td>@book.AuthorName</td>
+                    <td>@book.PublicationName</td>
+                    <td>@book.ISBN</td>
+                    <td>
+                        <a href="@Url.Action("Edit", "Books", new { id = book.Id })" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="@Url.Action("Delete", "Books", new { id = book.Id })" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+                index++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="7" class="text-center">No books found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
